@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Pong</title>
+    <style>
+        body{
+            margin:0;
+            overflow: hidden; 
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="canv"></canvas>
+    <script>
+        let canvas = document.getElementById("canv");
+        let ctx = canvas.getContext("2d");
+
+       
+
+        let margin = 20;
+        let size = 100;
+
+        //cirlce start
+        let pongx = margin + size / 2;
+        let pongy = margin + size / 2;
+
+        //circle velocity
+        let pongVX = 3;
+        let pongVY = 2;
+
+        //begin drawing
+
+        function update() {
+            //model of mvc
+            pongx += pongVX;
+            pongy += pongVY;
+
+
+            if (pongx + pongVX > margin + size) {
+                pongVX *= -1
+            }
+            if (pongy + pongVY > margin + size) {
+                pongVY *= -1
+            }
+            if (pongx + pongVX < margin) {
+                pongVX *= -1
+            }
+            if (pongy + pongVY < margin) {
+                pongVY *= -1
+            }
+        }
+
+        function draw() {
+            //view of mvc
+            canvas.width = window.innerWidth
+            canvas.height = window.innerHeight
+            
+            //clear the canvas, i know this isn't how we did it in class but i googled it before we got there
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            //how we did it in class
+            // ctx.fillStyle = "green";
+            // ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            //draw a box
+            ctx.beginPath();
+            ctx.moveTo(margin, margin);
+            ctx.lineTo(margin + size, margin);
+            ctx.lineTo(margin + size, margin + size);
+            ctx.lineTo(margin, margin + size);
+            ctx.lineTo(margin, margin);
+            ctx.stroke();
+
+            //draw circle
+            ctx.fillStyle = "blue"
+            ctx.beginPath();
+            ctx.arc(pongx, pongy, 5, 0, 2 * Math.PI);
+            ctx.fill();
+        }
+
+        function gameLoop() {
+            update();
+            draw();
+        }
+
+
+        setInterval(gameLoop, 1000 / 25)
+    </script>
+</body>
+
+</html>
